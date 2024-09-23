@@ -3,84 +3,58 @@
 #include <stdbool.h>
 #include <string.h>
 
-// zmienna  - zmienna
-// &zmienna - adress do zmiennej
-
-// '\0'     - znak końca stringa
-
-float action(float a, float b, char action);
-int arrayContain(char array[], char value);
-char *replace_substring(char str[], char oldStr[], char newStr[]);
-int findEndIndex(char str[]);
-
-int main()
-{
-    printf("#################################### \n");
-
-    char str[] = "aoaoaoaoaoa";
-    char prev[] = "o";
-    char new[] = "0";
-    char *repStr = replace_substring(str, prev, new);
-
-    printf("%s \n", repStr);
-
-    return 0;
-}
-
-char *replace_substring(char str[], char oldStr[], char newStr[])
-{
-    char result[900] = "";
-
-    int strLength = sizeof(str) / sizeof(str[0]);
-    printf("%d \n", strLength);
-
-    int rStrLength = sizeof(result) / sizeof(result[0]);
-    printf("%d \n", rStrLength);
-
-    for (int i = 0; i < strLength; i++)
-    {
-
-    }
-
-    return "abc";
-}
-
-int findEndIndex(char str[])
-{   
-    int i =0;
-    for (i = 0; str[i] != '\0'; i++)
-    { }
-    return i;
-}
-
-char addString(char str[], char strToAdd[])
-
+#include "string_helper.h"
 
 float action(float a, float b, char action)
 {
-    switch (action)
-    {
-    case '+':
-        return a + b;
-    case '-':
-        return a - b;
-    case '*':
-        return a * b;
-    case '/':
-        return a / b;
-    default:
-        printf("action: %c \n", action);
-        return -99.0;
-    }
+	switch (action)
+	{
+	case '+':
+		return a + b;
+	case '-':
+		return a - b;
+	case '*':
+		return a * b;
+	case '/':
+		return a / b;
+	default:
+		printf("action: %c \n", action);
+		return -99.0;
+	}
 }
 
-int arrayContain(char array[], char value)
-{
-    for (int i = 0; array[i] != '\0'; i++)
-    {
-        if (array[i] == value)
-            return true;
-    }
+int main() {
+	char actions[] = "+-*/";
+	char txt[] = "22+33+44";
 
-    return false;
+	char* str_a = NULL, * str_b = NULL;
+	int size_a = 0, size_b = 0, index_after_action = 0;
+	float a = 0, b = 0;
+
+	for (int i = 0; i < getLengthStr(txt); i++)
+	{
+		if (arrayContain(actions, txt[i]))
+		{
+			printf("zwieram=%c \n", txt[i]);
+
+			if (a == 0)
+			{
+				char* str_a = string_copy(txt, index_after_action, i - index_after_action);
+				printf("str_a=%s.\n", str_a);
+				a = atof(str_a);
+				index_after_action = i + 1;
+			}
+			else if (b == 0)
+			{
+				char* str_b = string_copy(txt, index_after_action, i - index_after_action);
+				printf("str_b=%s.\n", str_b);
+				b = atof(str_b);
+				index_after_action = i + 1;
+			}
+		}
+
+		size_a++;
+	}
+
+	return 0;
 }
