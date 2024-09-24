@@ -97,7 +97,8 @@ int findEndIndex(char str[])
 
 int arrayContain(char array[], char value)
 {
-    for (int i = 0; array[i] != '\0'; i++)
+    int len = getLengthStr(array);
+    for (int i = 0; i <= len; i++)
     {
         if (array[i] == value)
             return 1;
