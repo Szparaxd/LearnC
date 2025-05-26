@@ -37,43 +37,45 @@ float calculate(float a, float b, char action)
 
 float toCount(char operacion[])
 {
-	char actions[] = "+-*/";
+        char actions[] = "+-*/";
 
-	char* str_a = NULL, * str_b = NULL;
-	int size_a = 0, size_b = 0, index_after_action = 0;
-	float a = 0, b = 0;
+        int index_after_action = 0;
+        float a = 0, b = 0;
+        bool has_a = false, has_b = false;
 
 	for (int i = 0; i <= getLengthStr(operacion); i++)
 	{
 		printf("i=%d c=%c \n", i, operacion[i]);
 
-		if (arrayContain(actions, operacion[i]))
-		{
-			if (a == 0)
-			{
-				char* str_a = string_copy(operacion, index_after_action, i - index_after_action);
-				printf("str_a=%s.\n", str_a);
-				a = atof(str_a);
-			}
-			else if (b == 0)
-			{
-				char* str_b = string_copy(operacion, index_after_action, i - index_after_action);
-				printf("str_b=%s.\n", str_b);
-				b = atof(str_b);
-			}
+                if (arrayContain(actions, operacion[i]))
+                {
+                        char *tmp = string_copy(operacion, index_after_action, i - index_after_action);
+                        printf("segment=%s.\n", tmp);
 
-			if (a != 0 && b != 0)
-			{
-				printf("a=%f b=%f action=%c\n", a, b, operacion[index_after_action - 1]);
-				a = calculate(a, b, operacion[index_after_action - 1]);
-				b = 0;
-				printf("a=%f.\n", a);
-			}
+                        if (!has_a)
+                        {
+                                a = atof(tmp);
+                                has_a = true;
+                        }
+                        else if (!has_b)
+                        {
+                                b = atof(tmp);
+                                has_b = true;
+                        }
 
-			index_after_action = i + 1;
-		}
+                        free(tmp);
 
-		size_a++;
+                        if (has_a && has_b)
+                        {
+                                printf("a=%f b=%f action=%c\n", a, b, operacion[index_after_action - 1]);
+                                a = calculate(a, b, operacion[index_after_action - 1]);
+                                b = 0;
+                                has_b = false;
+                                printf("a=%f.\n", a);
+                        }
+
+                        index_after_action = i + 1;
+                }
 	}
 
 	printf("r=%f  \n", a);
